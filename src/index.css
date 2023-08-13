@@ -22,6 +22,10 @@
 
 
 }
+.mt-2{
+  margin-top: 8px;
+  width: 90%;
+}
 .authenticationPage .left .text-container p{
   font-size: 20px;
   font-weight: 400;
@@ -61,4 +65,10 @@
 }
 .orange{
   color: #EA6C00 
+}
+
+.eye{
+  position: relative;
+  top: 75px;
+  right: 31px;
 }
