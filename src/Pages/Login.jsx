@@ -1,10 +1,50 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Image from '../Components/Image';
 import log from "../assets/log.png";
-import { Button, TextField, Typography } from '@mui/material';
+import { Alert, Button, TextField, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 const Login = () => {
+    const [fromData,setFromData]=useState({
+        email: "",
+        password:""
+    })
+    const [error,setError]=useState({
+        emailError : "",
+        passwordError: ""
+    })
+    const handleChange=(e)=>{
+        setFromData({
+            ...fromData,
+            [e.target.name] : e.target.value
+        })
+
+        if(e.target.name === "email"){
+            setError({...error,emailError:""})
+        }
+        if(e.target.name === "password"){
+            setError({...error,passwordError:""})
+        }
+
+    }
+    const handleLogin=()=>{
+           
+        const newError = {};
+
+        if (!fromData.password) {
+            newError.passwordError = "Password is required";
+        }
+    
+        if (!fromData.email) {
+            newError.emailError = "Email is required";
+        }
+        setError({
+            ...error,
+            ...newError
+        });
+    }
+   
+
   return (
     <div className='authenticationPage'>
     <div className='left'>
@@ -12,11 +52,18 @@ const Login = () => {
             <h1>Login to your account!</h1>
 
             <p>Free register and you can enjoy it</p>   
-            <TextField type='text' id="outlined-basic" label="Email Address" variant="outlined"  className='inputCss'/>
+            <TextField type='text' onChange={(e)=>handleChange(e)} name='email' id="outlined-basic" label="Email Address" variant="outlined"  className='inputCss'/>
+            {error.emailError && <Alert severity="error" className="mt-2">
+              {error.emailError}
+            </Alert>
 
-            <TextField type='password' id="outlined-basic" label="Password" variant="outlined"  className='inputCss'/>
+            }
 
-            <Button variant="contained" className='SignUpBtn'>Login to Continue</Button>
+            <TextField type='password' onChange={(e)=>handleChange(e)} name='password' id="outlined-basic" label="Password" variant="outlined"  className='inputCss'/>
+            {error.passwordError && <Alert severity="error" className="mt-2">
+              {error.passwordError}
+            </Alert>}
+            <Button variant="contained" onClick={handleLogin} className='SignUpBtn'>Login to Continue</Button>
             <Typography variant="p" component="p" className='semiText'>Don’t have an account ? <Link className='orange'> Sign up</Link></Typography>
         </div>
     </div>
