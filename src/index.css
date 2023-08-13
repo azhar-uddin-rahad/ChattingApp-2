@@ -7,17 +7,19 @@
 }
 .authenticationPage .left{
   width: 50%;
+  height: 100vh;
   display: flex;
   justify-content: end;
 }
 .authenticationPage .left .text-container{
-  margin-top: 225px;
-  width: 70%;
+  margin-top: 100px;
+  width: 60%;
 }
 .authenticationPage .left .text-container h1{
   font-size: 34px;
   font-weight: 700;
   color: #11175D;
+
 
 }
 .authenticationPage .left .text-container p{
@@ -29,6 +31,7 @@
 
 .authenticationPage .right{
   width: 50%; 
+  height: 100vh;
 }
 
 .authenticationPage .bg{
