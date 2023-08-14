@@ -18,23 +18,18 @@ const Login = () => {
             ...fromData,
             [e.target.name] : e.target.value
         })
-
         if(e.target.name === "email"){
             setError({...error,emailError:""})
         }
         if(e.target.name === "password"){
             setError({...error,passwordError:""})
         }
-
     }
-    const handleLogin=()=>{
-           
+    const handleLogin=()=>{        
         const newError = {};
-
         if (!fromData.password) {
             newError.passwordError = "Password is required";
         }
-    
         if (!fromData.email) {
             newError.emailError = "Email is required";
         }
@@ -43,8 +38,6 @@ const Login = () => {
             ...newError
         });
     }
-   
-
   return (
     <div className='authenticationPage'>
     <div className='left'>
