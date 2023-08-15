@@ -126,7 +126,7 @@ const Login = () => {
               {error.emailError}
             </Alert>
           )}
-
+            
           <TextField
             type="password"
             onChange={(e) => handleChange(e)}
@@ -141,6 +141,7 @@ const Login = () => {
               {error.passwordError}
             </Alert>
           )}
+          <Typography component="p" variant="p" className="orange">Forget Password ? <Link to="/forgotpassword">Click here ?</Link></Typography>
           <Button
             variant="contained"
             onClick={handleLogin}

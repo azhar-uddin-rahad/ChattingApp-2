@@ -72,3 +72,21 @@
   top: 75px;
   right: 31px;
 }
+
+.forgetPasswordContainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #5F35F5;
+  height: 100vh;
+}
+.forgetPasswordBody{
+  height: 300px;
+  width: 600px;
+  padding: 50px;
+  background: #fff;
+}
+.changePassField{
+  margin: 30px 0 !important;
+  width: 80%;
+}
