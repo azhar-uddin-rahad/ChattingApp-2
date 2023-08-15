@@ -4,7 +4,14 @@ import reg from "../assets/reg.png";
 import { Alert, Button, TextField, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import { LoadingButton } from "@mui/lab";
+import { useNavigate } from "react-router-dom";
+import {toast} from 'react-toastify'
 const Registration = () => {
+  const auth = getAuth();
+  const navigate=useNavigate()
+
   const [fullNameError, setFullNameError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
@@ -14,6 +21,7 @@ const Registration = () => {
     fullName: "",
     email: "",
     password: "",
+    loading: ""
   });
 
   const handleChange = (e) => {
@@ -30,13 +38,14 @@ const Registration = () => {
     if (e.target.name == "password") {
       setPasswordError("");
     }
-
     /*
        when value input any filed then all error gone
        setFullNameError("")
        setPasswordError("")
        setEmailError("") */
+
   };
+
   const handleRegistration = () => {
     if (!fromData.fullName) {
       setFullNameError("Full Name is Required");
@@ -47,7 +56,7 @@ const Registration = () => {
     if (!fromData.password) {
       setPasswordError("Password is Required");
     }
-    if (fromData.fullName && fromData.email && fromData.password) {
+    if (fromData.fullName && fromData.email && fromData.password) {   
       /* let pattern =/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
             let passwordRegex= /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
             if(!pattern.test(fromData.email)){
@@ -59,6 +68,74 @@ const Registration = () => {
             if(fromData.fullName.length > 3 && fromData.fullName.length< 30){
                 setFullNameError("Enter Valid Name")
             } */
+            const {email,password}=fromData;
+           setFromData({
+            ...fromData,
+            loading: true
+          })
+            createUserWithEmailAndPassword(auth,email,password).then((user)=>{
+              
+              sendEmailVerification(auth.currentUser)
+              .then(() => {
+                setFromData({
+                  fullName: "",
+                  email: "",
+                  password: "",
+                  loading: false
+                })
+                toast.success('Registration SuccessFull! Please  Verify Your Email', {
+                  position: "bottom-center",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "light",
+                  });
+                  setTimeout(()=>{
+                    navigate('/login')
+                  })
+                  
+               
+              });
+             
+            })
+            .catch((error) => {
+              const errorCode = error.code;
+              const errorMessage = error.message;
+              console.log(errorCode)
+              setFromData({
+                ...fromData,
+                loading: false
+              })
+                if(errorCode.includes("email")){
+                  toast.error(`${errorCode.split('/')[1]}`, {
+                    position: "bottom-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    });
+                    setEmailError(`${errorCode.split('/')[1]}`)
+                }
+                if(errorCode.includes("password")){
+                  toast.error(`${errorCode.split('/')[1]}`, {
+                    position: "bottom-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    });
+                  setPasswordError(`${errorCode.split('/')[1]}`)
+                }
+             });
     }
   };
   return (
@@ -68,9 +145,9 @@ const Registration = () => {
           <h1>Get started with easily register</h1>
 
           <p>Free register and you can enjoy it</p>
-
           <TextField
             type="text"
+            value={fromData.fullName}
             onChange={handleChange}
             name="fullName"
             id="outlined-basic"
@@ -87,6 +164,7 @@ const Registration = () => {
           <TextField
             type="text"
             onChange={handleChange}
+            value={fromData.email}
             name="email"
             id="outlined-basic"
             label="Email"
@@ -102,6 +180,7 @@ const Registration = () => {
           <TextField
             type={open ? "text" : "password"}
             onChange={handleChange}
+            value={fromData.password}
             name="password"
             id="outlined-basic"
             label="Password"
@@ -118,15 +197,22 @@ const Registration = () => {
               {passwordError}
             </Alert>
           )}
+
+          {fromData.loading ? <LoadingButton loading variant="outlined" className="SignUpBtn">
+            Submit
+          </LoadingButton> :
+           <Button
+           variant="contained"
+           onClick={handleRegistration}
+           className="SignUpBtn"
+         >
+           Sign up
+         </Button>
+
+           }
           
 
-          <Button
-            variant="contained"
-            onClick={handleRegistration}
-            className="SignUpBtn"
-          >
-            Sign up
-          </Button>
+         
           <Typography variant="p" component="p" className="semiText">
             Already have an account ? <Link className="orange">Sign In</Link>
           </Typography>
