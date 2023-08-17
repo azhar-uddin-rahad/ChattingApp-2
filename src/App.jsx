@@ -10,6 +10,8 @@ import { ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Home from "./Pages/Home";
 import ForgotPassword from "./Pages/ForgotPassword";
+import RootLayout from "./Layout/RootLayout";
+import Message from "./Pages/Message";
 
 function App() {
   const route = createBrowserRouter(
@@ -17,15 +19,20 @@ function App() {
       <Route>
         <Route path="/" element={<Registration></Registration>}></Route>
         <Route path="/login" element={<Login></Login>}></Route>
-        <Route path="/home" element={<Home></Home>}></Route>
         <Route path="/forgotpassword" element={<ForgotPassword></ForgotPassword>}></Route>
+        <Route path="/chatting-app" element={<RootLayout></RootLayout>}>
+
+        <Route path="home" element={<Home></Home>}></Route>
+        <Route path="message" element={<Message></Message>}></Route>
+
+        </Route>
       </Route>
     )
-  );
+  )
 
   return<>
 
-<RouterProvider router={route}></RouterProvider>;
+<RouterProvider router={route}></RouterProvider>
 <ToastContainer />
 </>  
 }

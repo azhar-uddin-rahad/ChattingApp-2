@@ -17,7 +17,6 @@ const handleSignOut=()=>{
 
     return (
         <div>
-            
             <Button variant="contained" onClick={handleSignOut}>Contained</Button>
         </div>
     );
