@@ -100,6 +100,9 @@ ul li {
   display: flex;
   gap: 43px;
 }
+.layoutContent {
+  width: 100%;
+}
 .navbar {
   width: 186px;
   height: 100vh;
@@ -126,19 +129,19 @@ ul li {
   position: absolute;
   top: -10px;
   left: -35px;
-  width: 327%;
+  width: 283%;
   height: 100%;
   background: #fff;
   padding-top: 20px;
   padding-left: 45px;
   border-radius: 20px 0 0 20px;
 }
-.list .icon.active::before{
+.list .icon.active::before {
   content: "";
   z-index: 1;
   position: absolute;
   top: -10px;
-  right: -78px;
+  right: -65px;
   width: 6px;
   height: 155%;
   background: #5f35f5;
@@ -166,4 +169,108 @@ ul li {
   width: 100%;
   height: 100%;
   border-radius: 100px;
+}
+
+.box {
+  width: 100%;
+  overflow: hidden;
+  margin-bottom: 40px;
+  padding: 15px;
+  box-sizing: border-box;
+  height: 347px;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  position: relative;
+}
+
+.box:hover {
+  overflow-y: scroll;
+}
+
+/* .box2 {
+  width: 100%;
+  
+  overflow:hidden;
+  padding: 15px;
+  box-sizing: border-box;
+  height: 347px;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  position: relative;
+
+}
+
+.box2:hover {
+  overflow-y: scroll;
+} */
+
+.group-heading {
+  display: flex;
+  z-index: 10;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: -20px;
+  left: 0;
+  background-color: #fff;
+  padding: 10px;
+}
+
+.group-card-body .profile {
+  width: 70px;
+  height: 70px;
+}
+.group-card-body .profile img {
+  width: 100%;
+  height: 100%;
+}
+.group-card-body {
+  margin-top: 17px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+  padding-bottom: 14px;
+  margin-bottom: 14px;
+  display: flex;
+}
+.group-card-body:last-child {
+  border: none;
+}
+.groupsName {
+  font-size: 18px;
+  font-weight: 600;
+  color: #000;
+}
+.messageTitle {
+  font-size: 14px;
+  color: rgba(77, 77, 77, 0.75);
+  font-weight: 400;
+}
+
+.title {
+  margin-left: 14px;
+  margin-right: 51px;
+}
+.joinBtn {
+  background: #5f35f5 !important;
+  width: 87px !important;
+  color: #fff !important;
+  font-size: 20px !important;
+  font-weight: 600 !important;
+  height: 30px !important;
+ 
+}
+.addBtn{
+  background: #5f35f5 !important;
+  width: 30px !important;
+  color: #fff !important;
+  font-size: 20px !important;
+  font-weight: 600 !important;
+  height: 30px !important;
+ 
+}
+
+.addIcon{
+  color: hwb(0 100% 0%) !important;
+
 }
