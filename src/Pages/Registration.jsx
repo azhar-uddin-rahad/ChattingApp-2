@@ -4,12 +4,15 @@ import reg from "../assets/reg.png";
 import { Alert, Button, TextField, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification,updateProfile } from "firebase/auth";
 import { LoadingButton } from "@mui/lab";
 import { useNavigate } from "react-router-dom";
-import {toast} from 'react-toastify'
+import {toast} from 'react-toastify';
+import { getDatabase, push, ref, set } from "firebase/database";
+
 const Registration = () => {
   const auth = getAuth();
+  const db = getDatabase();
   const navigate=useNavigate()
 
   const [fullNameError, setFullNameError] = useState("");
@@ -74,68 +77,79 @@ const Registration = () => {
             loading: true
           })
             createUserWithEmailAndPassword(auth,email,password).then((user)=>{
-              
-              sendEmailVerification(auth.currentUser)
-              .then(() => {
+              updateProfile(auth.currentUser, {
+                displayName: fromData.fullName, photoURL: "https://ibb.co/Qnf4m1K"
+              }).then(() => {
+                sendEmailVerification(auth.currentUser)
+                .then(() => {
+
+                  set(ref(db,'users/'+user.user.uid), {
+                    username: fromData.fullName,
+                    email:fromData.email,
+                    profile_picture : user.user.photoURL
+                  });
+
+                  setFromData({
+                    fullName: "",
+                    email: "",
+                    password: "",
+                    loading: false
+                  })
+                  toast.success('Registration SuccessFull! Please  Verify Your Email', {
+                    position: "bottom-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    });
+                    setTimeout(()=>{
+                      navigate('/login')
+                    })
+                    
+                 
+                });
+               
+              })
+              .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorCode)
                 setFromData({
-                  fullName: "",
-                  email: "",
-                  password: "",
+                  ...fromData,
                   loading: false
                 })
-                toast.success('Registration SuccessFull! Please  Verify Your Email', {
-                  position: "bottom-center",
-                  autoClose: 5000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  theme: "light",
-                  });
-                  setTimeout(()=>{
-                    navigate('/login')
-                  })
-                  
-               
-              });
-             
-            })
-            .catch((error) => {
-              const errorCode = error.code;
-              const errorMessage = error.message;
-              console.log(errorCode)
-              setFromData({
-                ...fromData,
-                loading: false
+                  if(errorCode.includes("email")){
+                    toast.error(`${errorCode.split('/')[1]}`, {
+                      position: "bottom-center",
+                      autoClose: 5000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: "light",
+                      });
+                      setEmailError(`${errorCode.split('/')[1]}`)
+                  }
+                  if(errorCode.includes("password")){
+                    toast.error(`${errorCode.split('/')[1]}`, {
+                      position: "bottom-center",
+                      autoClose: 5000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: "light",
+                      });
+                    setPasswordError(`${errorCode.split('/')[1]}`)
+                  }
+               });
               })
-                if(errorCode.includes("email")){
-                  toast.error(`${errorCode.split('/')[1]}`, {
-                    position: "bottom-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                    });
-                    setEmailError(`${errorCode.split('/')[1]}`)
-                }
-                if(errorCode.includes("password")){
-                  toast.error(`${errorCode.split('/')[1]}`, {
-                    position: "bottom-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                    });
-                  setPasswordError(`${errorCode.split('/')[1]}`)
-                }
-             });
+            
     }
   };
   return (

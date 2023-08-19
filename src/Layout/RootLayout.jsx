@@ -1,12 +1,24 @@
 import React from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import profile from "../assets/profile.png";
 import { AiOutlineHome, AiFillMessage, AiFillSetting } from "react-icons/ai";
 import { IoIosNotifications } from "react-icons/io";
 import { VscSignOut } from "react-icons/vsc";
-
+import { getAuth, signOut } from "firebase/auth";
 const RootLayout = () => {
+  const auth = getAuth();
+    const navigate=useNavigate()
+  const handleSignOut=()=>{
+
+    signOut(auth).then(() => {
+        navigate("/login")
+      }).catch((error) => {
+       
+      });
+}
+
+
   return (
     <div className="container">
       <div className="containerWraper">
@@ -20,7 +32,7 @@ const RootLayout = () => {
             <li><NavLink className="icon" to="/chatting-app/message"><AiFillMessage></AiFillMessage></NavLink></li>
             <li><NavLink className="icon"  to="/chatting-app/notification"><IoIosNotifications></IoIosNotifications></NavLink></li>
             <li><NavLink className="icon"  to="/chatting-app/setting"><AiFillSetting></AiFillSetting></NavLink></li>
-            <li><NavLink className="icon" to="/chatting-app/logout"><VscSignOut></VscSignOut></NavLink></li>
+            <li onClick={handleSignOut}><NavLink className="icon" to="/chatting-app/logout"><VscSignOut></VscSignOut></NavLink></li>
             </ul>
         </div>
         </div>

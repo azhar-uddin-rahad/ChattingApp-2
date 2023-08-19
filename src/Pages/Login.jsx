@@ -68,7 +68,7 @@ const Login = () => {
                 });
 
                setTimeout(()=>{
-                    navigate('/home')
+                    navigate('/chatting-app/home')
                   })
                 
           }

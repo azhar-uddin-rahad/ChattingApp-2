@@ -1,6 +1,4 @@
-import { Button } from '@mui/material';
 import React from 'react';
-import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Group from '../Components/Group';
@@ -10,18 +8,7 @@ import FriendRequest from '../Components/FriendRequest';
 import MyGroup from '../Components/MyGroup';
 import BlockedUser from '../Components/BlockedUser';
 const Home = () => {
-    
-    const auth = getAuth();
-    const navigate=useNavigate()
-const handleSignOut=()=>{
-
-    signOut(auth).then(() => {
-        navigate("/login")
-      }).catch((error) => {
-       
-      });
-}
-
+ 
     return (
         <div>
     <Grid container spacing={2}>
