@@ -13,6 +13,7 @@ const RootLayout = () => {
 
     signOut(auth).then(() => {
         navigate("/login")
+        localStorage.removeItem("user")
       }).catch((error) => {
        
       });
@@ -32,7 +33,7 @@ const RootLayout = () => {
             <li><NavLink className="icon" to="/chatting-app/message"><AiFillMessage></AiFillMessage></NavLink></li>
             <li><NavLink className="icon"  to="/chatting-app/notification"><IoIosNotifications></IoIosNotifications></NavLink></li>
             <li><NavLink className="icon"  to="/chatting-app/setting"><AiFillSetting></AiFillSetting></NavLink></li>
-            <li onClick={handleSignOut}><NavLink className="icon" to="/chatting-app/logout"><VscSignOut></VscSignOut></NavLink></li>
+            <li onClick={handleSignOut}><NavLink className="icon" ><VscSignOut></VscSignOut></NavLink></li>
             </ul>
         </div>
         </div>

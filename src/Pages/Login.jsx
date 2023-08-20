@@ -5,9 +5,13 @@ import { Alert, Button, TextField, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { toast } from "react-toastify";
+import { useDispatch } from 'react-redux'
+import { userinfo } from "../Slice/User/userSlice";
 const Login = () => {
   const auth = getAuth();
-  const navigate=useNavigate()
+  const navigate=useNavigate();
+  const dispatch =useDispatch();
+
   const [fromData, setFromData] = useState({
     email: "",
     password: "",
@@ -66,7 +70,8 @@ const Login = () => {
                 progress: undefined,
                 theme: "light",
                 });
-
+                dispatch(userinfo(user))
+                localStorage.setItem("user",JSON.stringify(user.user))
                setTimeout(()=>{
                     navigate('/chatting-app/home')
                   })

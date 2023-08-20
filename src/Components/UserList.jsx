@@ -8,17 +8,20 @@ const UserList = () => {
   const db = getDatabase();
   const auth = getAuth();
   const [userList,setUserList]=useState([]);
-  const [friendRequest,setFriendRequest]=useState([])
+  const [friendRequest,setFriendRequest]=useState([]);
+ // const [keys,setKeys]=useState("");
+
   useEffect(() => {
     const friendRequestRef = ref(db, "friendRequest/");
     onValue(friendRequestRef, (snapshot) => {
      let arr=[];
      snapshot.forEach(item=>{
-        arr.push(item.val().receiverId + item.val().senderId)
-        
+    //    let key=[];
+    //    key.push(item.key)
+        arr.push(item.val().receiverId + item.val().senderId)    
      })
-     setFriendRequest(arr)
-  
+     setFriendRequest(arr);
+    //  setKeys(keys)
     });
    
   }, []);
@@ -41,8 +44,9 @@ const UserList = () => {
         receiverName: item.username
       });
   }
-  const handleFriendReqCancel=()=>{
-    remove(ref(db,'friendRequest',))
+  const handleFriendReqCancel=(id)=>{
+    console.log(id)
+    remove(ref(db,'friendRequest', id))
   }
  
   return (
@@ -61,7 +65,7 @@ const UserList = () => {
                <p className="messageTitle">{users.email}</p>
              </div>
              {friendRequest.includes(users.id+auth.currentUser.uid)?
-              <Button className="addBtn" size="small" onClick={()=>handleFriendReqCancel(users)}>
+              <Button className="addBtn" size="small" onClick={()=>handleFriendReqCancel(users.id)}>
               cancel
             </Button>
              :
