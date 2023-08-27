@@ -6,9 +6,13 @@ import { AiOutlineHome, AiFillMessage, AiFillSetting } from "react-icons/ai";
 import { IoIosNotifications } from "react-icons/io";
 import { VscSignOut } from "react-icons/vsc";
 import { getAuth, signOut } from "firebase/auth";
+import { useSelector } from "react-redux";
+
 const RootLayout = () => {
   const auth = getAuth();
     const navigate=useNavigate()
+    const userData=useSelector((state)=>(state.loggedUser.loginUser.displayName));
+    console.log(userData)
   const handleSignOut=()=>{
 
     signOut(auth).then(() => {
@@ -27,6 +31,7 @@ const RootLayout = () => {
         <div className="navbar-container">
         <div className='navbarImg'>
                 <img src={profile} alt="" />
+                <p className="author">{userData}</p>
             </div>
             <ul className='list'>
             <li><NavLink className="icon" to="/chatting-app/home"><AiOutlineHome></AiOutlineHome></NavLink></li>

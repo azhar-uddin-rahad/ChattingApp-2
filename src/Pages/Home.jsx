@@ -12,7 +12,7 @@ import { useSelector } from 'react-redux';
 const Home = () => {
     const loggedUser=useSelector((state)=>state.loggedUser.loginUser);
     const navigate=useNavigate()
-    console.log(loggedUser)
+   
    useEffect(()=>{
     if(loggedUser == null){
         navigate('/login')
@@ -33,7 +33,7 @@ const Home = () => {
          <MyGroup></MyGroup>
         </Grid>
         <Grid item xs={4} >
-        {/* <UserList></UserList> */}
+        <UserList></UserList>
         <BlockedUser></BlockedUser>
         </Grid>
         

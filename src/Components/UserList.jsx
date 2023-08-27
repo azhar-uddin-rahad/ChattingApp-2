@@ -4,12 +4,16 @@ import { IoMdAdd } from "react-icons/io";
 import { getDatabase, ref, onValue, set, push, remove } from "firebase/database";
 import { useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
+import { useSelector } from "react-redux";
+
 const UserList = () => {
   const db = getDatabase();
   const auth = getAuth();
   const [userList,setUserList]=useState([]);
   const [friendRequest,setFriendRequest]=useState([]);
- // const [keys,setKeys]=useState("");
+  const userData=useSelector((state)=>(state.loggedUser.loginUser));
+  
+
 
   useEffect(() => {
     const friendRequestRef = ref(db, "friendRequest/");
@@ -30,23 +34,25 @@ const UserList = () => {
     onValue(usersRef, (snapshot) => {
      let arr=[];
      snapshot.forEach(item=>{
-        arr.push({...item.val(),id:item.key})
+        if(userData.uid != item.key){
+          arr.push({...item.val(),id:item.key})
+        }
      })
      setUserList(arr)
     });
    
   }, []);
   const handleFriendRequest=(item)=>{
-    set(push(ref(db,'friendRequest/')), {
+    set(ref(db,'friendRequest/' + item.id), {
         senderId: auth.currentUser.uid,
         senderName: auth.currentUser.displayName,
         receiverId: item.id,
         receiverName: item.username
       });
   }
-  const handleFriendReqCancel=(id)=>{
-    console.log(id)
-    remove(ref(db,'friendRequest', id))
+  const handleFriendReqCancel=(item)=>{
+  
+    remove(ref(db,'friendRequest', item.id))
   }
  
   return (
@@ -65,13 +71,20 @@ const UserList = () => {
                <p className="messageTitle">{users.email}</p>
              </div>
              {friendRequest.includes(users.id+auth.currentUser.uid)?
-              <Button className="addBtn" size="small" onClick={()=>handleFriendReqCancel(users.id)}>
+              <Button className="addBtn" size="small" onClick={()=>handleFriendReqCancel(users)}>
               cancel
             </Button>
              :
-             <Button className="addBtn" onClick={()=>handleFriendRequest(users)}>
-             <IoMdAdd className="addIcon" />
-           </Button>
+             friendRequest.includes(auth.currentUser.uid+users.id) ?
+             <Button className="addBtn" >
+             Padding
+             </Button>
+              
+              :
+              <Button className="addBtn" onClick={()=>handleFriendRequest(users)}>
+              <IoMdAdd className="addIcon" />
+            </Button>
+            
              }
            
            </div>

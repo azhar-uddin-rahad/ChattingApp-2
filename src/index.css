@@ -275,3 +275,10 @@ ul li {
   color: hwb(0 100% 0%) !important;
 
 }
+.author{
+  font-size: 18px;
+  color: #fff;
+  font-weight: 7000;
+  margin-top: 5px;
+  text-align: center;
+}

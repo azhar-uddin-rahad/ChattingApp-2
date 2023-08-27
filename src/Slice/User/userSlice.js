@@ -8,7 +8,7 @@ export const counterSlice = createSlice({
   },
   reducers: {
     userinfo: (state,actions) => {
-        console.log(actions.payload)
+    
         state.loginUser =actions.payload
       
  
