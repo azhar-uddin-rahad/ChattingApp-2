@@ -3,10 +3,11 @@ import Image from "../Components/Image";
 import log from "../assets/log.png";
 import { Alert, Button, TextField, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, signInWithPopup, FacebookAuthProvider } from "firebase/auth";
 import { toast } from "react-toastify";
 import { useDispatch } from 'react-redux'
 import { userinfo } from "../Slice/User/userSlice";
+
 const Login = () => {
   const auth = getAuth();
   const navigate=useNavigate();
@@ -110,6 +111,35 @@ const Login = () => {
         });
     }
   };
+
+  const loginWithFd=()=>{
+    const provider = new FacebookAuthProvider();
+    signInWithPopup(auth, provider)
+  .then((result) => {
+    // The signed-in user info.
+    const user = result.user;
+    console.log(user)
+    // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+    const credential = FacebookAuthProvider.credentialFromResult(result);
+    const accessToken = credential.accessToken;
+
+    // IdP data available using getAdditionalUserInfo(result)
+    // ...
+  })
+  .catch((error) => {
+    // Handle Errors here.
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // The email of the user's account used.
+    const email = error.customData.email;
+    // The AuthCredential type that was used.
+    const credential = FacebookAuthProvider.credentialFromError(error);
+    console.log(errorCode);
+    console.log(errorMessage);
+
+  });
+    
+  }
   return (
     <div className="authenticationPage">
       <div className="left">
@@ -157,6 +187,8 @@ const Login = () => {
           <Typography variant="p" component="p" className="semiText">
             Don’t have an account ? <Link className="orange"> Sign up</Link>
           </Typography>
+
+          <button onClick={loginWithFd}>Login with facebook</button>
         </div>
       </div>
       <div className="right">

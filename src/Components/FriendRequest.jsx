@@ -1,7 +1,19 @@
 import { Button } from '@mui/material'
-
 import profile from '../assets/profile.png'
+import { getDatabase, ref, onValue } from "firebase/database";
+import { useState } from 'react';
 const FriendRequest = () => {
+    const [friendReqList,setFriendReqList]=useState();
+const db = getDatabase();
+const friendRequestRef = ref(db, 'friendRequest/');
+onValue(friendRequestRef, (snapshot) => {
+    let arr=[];
+    snapshot.forEach(item=>(
+      arr.push(item.val())
+        
+    ))
+ 
+});
     return (
         <div className='box'>
         <div className='group-heading'>
