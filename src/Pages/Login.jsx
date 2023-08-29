@@ -185,7 +185,7 @@ const Login = () => {
             Login to Continue
           </Button>
           <Typography variant="p" component="p" className="semiText">
-            Don’t have an account ? <Link className="orange"> Sign up</Link>
+            Don’t have an account ? <Link className="orange" to="/"> Sign up</Link>
           </Typography>
 
           <button onClick={loginWithFd}>Login with facebook</button>
